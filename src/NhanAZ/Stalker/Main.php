@@ -14,12 +14,14 @@ use Symfony\Component\Filesystem\Path;
 
 class Main extends PluginBase implements Listener {
 
+	private const DEFAULT_REDACTED_COMMANDS = ["login", "register"];
+
 	private MainLogger $logger;
 
 	protected function onEnable(): void {
 		$this->saveDefaultConfig();
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-		if ($this->getConfig()->get("perDayFile")) {
+		if ($this->getConfig()->get("perDayFile") === true) {
 			@mkdir($this->getDataFolder() . "logs/");
 			$this->logger = new MainLogger(Path::join($this->getDataFolder(), "logs/" . date("Y-m-d") . ".log"), Terminal::hasFormattingCodes(), "Server", new \DateTimeZone(Timezone::get()));
 		} else {
@@ -27,20 +29,26 @@ class Main extends PluginBase implements Listener {
 		}
 	}
 
+	protected function onDisable(): void {
+		if (isset($this->logger)) {
+			$this->logger->shutdownLogWriterThread();
+		}
+	}
+
 	/**
 	 * @handleCancelled true
 	 */
-	public function onCommandEvent(CommandEvent $event): bool {
-		$cmd = $event->getCommand();
+	public function onCommandEvent(CommandEvent $event): void {
+		$cmd = self::redactCommand($event->getCommand(), $this->getConfig()->get("exceptionCmds"));
 		$name = $event->getSender()->getName();
 
-		$exceptionCmds = $this->getConfig()->get("exceptionCmds");
-		if (is_array($exceptionCmds) && in_array(explode(" ", $cmd)[0], $exceptionCmds, true)) {
-			$cmd = preg_replace('/[^\s]/', "*", $cmd);
-		}
-
 		$replacements = ["{sender}" => $name, "{command}" => $cmd];
-		$message = str_replace(array_keys($replacements), $replacements, strval($this->getConfig()->get("message")));
+		$format = $this->getConfig()->get("message");
+		if (!is_string($format)) {
+			$this->getLogger()->warning("Invalid message format; using the default in memory");
+			$format = "<{sender}> /{command}";
+		}
+		$message = str_replace(array_keys($replacements), array_values($replacements), $format);
 
 		$this->logger->info($message);
 
@@ -50,6 +58,21 @@ class Main extends PluginBase implements Listener {
 				$stalker->sendMessage($message);
 			}
 		}
-		return true;
+	}
+
+	private static function redactCommand(string $command, mixed $exceptionCmds): string {
+		$redactedCommands = self::DEFAULT_REDACTED_COMMANDS;
+		if (is_array($exceptionCmds)) {
+			foreach ($exceptionCmds as $exceptionCmd) {
+				if (is_string($exceptionCmd)) {
+					$redactedCommands[] = strtolower($exceptionCmd);
+				}
+			}
+		}
+		$commandName = strtolower(strtok(ltrim($command), " \t\r\n") ?: "");
+		if (in_array($commandName, $redactedCommands, true)) {
+			return preg_replace('/[^\s]/', "*", $command) ?? str_repeat("*", strlen($command));
+		}
+		return $command;
 	}
 }

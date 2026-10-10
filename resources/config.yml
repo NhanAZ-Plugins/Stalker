@@ -3,12 +3,11 @@
 # {command} : Command used by user
 message: "<{sender}> /{command}"
 
-# List of exception commands. (Experimental Feature)
-# The commands listed below will be hidden.
-# For example: /tell NhanAZ Hello World!
-# will be converted to /**** ****** ***** ******
-# exceptionCmds: ["register", "login", "tell"]
+# Commands to redact from staff messages and log files, without a leading slash.
+# Login and register are always redacted. Add authentication aliases and other
+# commands that may contain private arguments, for example ["l", "reg", "tell"].
 exceptionCmds: []
 
+# Choose the log file using the server date at plugin startup.
 perDayFile: false
 ...

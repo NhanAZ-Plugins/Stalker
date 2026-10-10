@@ -1,11 +1,11 @@
 ---
 name: Stalker
-version: 2.1.1
+version: 2.1.2
 main: NhanAZ\Stalker\Main
 api: 5.0.0
-website: https://github.com/NhanAZ
+website: https://github.com/NhanAZ-Plugins/Stalker
 author: NhanAZ
-description: Show commands used by players to staff
+description: Log server commands and show them to permitted staff on Axolotl-PM.
 
 permissions:
   stalker:
