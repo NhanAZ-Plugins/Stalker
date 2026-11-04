@@ -1,6 +1,15 @@
 # Stalker
 
-Stalker records server commands and sends a copy to online staff with the `stalker` permission. It runs on [Axolotl-PM](https://github.com/axolotl-pm/PocketMine-MP) and records commands from all command senders, including the console.
+Log Axolotl-PM commands and notify permitted staff with configurable redaction
+
+[![CI](https://github.com/NhanAZ-Plugins/Stalker/actions/workflows/build.yml/badge.svg)](https://github.com/NhanAZ-Plugins/Stalker/actions/workflows/build.yml)
+[![Latest release](https://img.shields.io/github/v/release/NhanAZ-Plugins/Stalker)](https://github.com/NhanAZ-Plugins/Stalker/releases/latest)
+[![License](https://img.shields.io/github/license/NhanAZ-Plugins/Stalker)](https://github.com/NhanAZ-Plugins/Stalker/blob/master/LICENSE)
+[![Discord](https://img.shields.io/discord/986553214889517088?label=Discord&logo=discord&logoColor=white&color=5865F2)](https://discord.gg/j2X83ujT6c)
+
+## Overview
+
+This plugin targets the PocketMine-MP and Axolotl-PM API 5 ecosystem and is maintained under [NhanAZ-Plugins](https://github.com/NhanAZ-Plugins).
 
 ## Requirements
 
