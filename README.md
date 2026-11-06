@@ -33,7 +33,7 @@ Commands outside the redaction list are stored with their arguments. Review the 
 
 ## Development and validation
 
-The [build workflow](.github/workflows/build.yml) tests command redaction against pinned Axolotl-PM source revisions. It then uses [DevTools](https://github.com/NhanAZ/DevTools) to run PHPStan at maximum level, build the PHAR and inspect the artifact. Exact tool and server revisions are recorded in the workflow and its [GitHub Actions runs](https://github.com/NhanAZ-Plugins/Stalker/actions).
+The [build workflow](.github/workflows/build.yml) tests command redaction against pinned Axolotl-PM source revisions. It then uses [DevTools](https://github.com/AxolotlBucketLabs/DevTools) to run PHPStan at maximum level, build the PHAR and inspect the artifact. Exact tool and server revisions are recorded in the workflow and its [GitHub Actions runs](https://github.com/NhanAZ-Plugins/Stalker/actions).
 
 Console command logging and plugin startup can be checked without a game client. Delivery of command messages to a Bedrock client has not been verified.
 
